@@ -5,6 +5,7 @@ import {
   useContext,
   useRef,
   useCallback,
+  useEffect,
   ReactNode,
 } from "react";
 import { useRouter, usePathname } from "next/navigation";
@@ -28,11 +29,36 @@ export default function TransitionProvider({
   const router = useRouter();
   const pathname = usePathname();
   const isAnimating = useRef(false);
+  const pendingPath = useRef<string | null>(null);
+
+  // Listen for route changes to trigger the "Enter" phase
+  // This ensures the curtain only slides away AFTER the new content is ready
+  useEffect(() => {
+    if (pendingPath.current === pathname) {
+      const overlay = document.getElementById("page-transition-overlay");
+      const curtain = overlay?.querySelector(".transition-curtain");
+
+      if (curtain) {
+        gsap.to(curtain, {
+          y: "-100%",
+          duration: 0.6,
+          ease: "power3.inOut",
+          onComplete: () => {
+            gsap.set(curtain, { y: "100%" });
+            isAnimating.current = false;
+            pendingPath.current = null;
+          },
+        });
+      }
+    }
+  }, [pathname]);
 
   const triggerTransition = useCallback(
     (href: string) => {
+      // Prevent double triggers or navigating to the current page
       if (href === pathname || isAnimating.current) return;
 
+      // Handle same-page hash links
       if (href.startsWith("#") || (href.startsWith("/#") && pathname === "/")) {
         const hash = href.replace("/", "");
         const el = document.querySelector(hash);
@@ -41,52 +67,30 @@ export default function TransitionProvider({
       }
 
       isAnimating.current = true;
+      pendingPath.current = href;
 
       const overlay = document.getElementById("page-transition-overlay");
       const curtain = overlay?.querySelector(".transition-curtain");
-      const pageContent = document.getElementById("page-content");
 
-      if (!overlay || !curtain || !pageContent) {
+      // Fallback for missing overlay
+      if (!overlay || !curtain) {
         router.push(href);
         isAnimating.current = false;
+        pendingPath.current = null;
         return;
       }
 
-      const tl = gsap.timeline({
+      // EXIT PHASE: Slide curtain UP
+      gsap.to(curtain, {
+        y: "0%",
+        duration: 0.5,
+        ease: "power3.inOut",
         onComplete: () => {
-          isAnimating.current = false;
+          router.push(href);
+          // Force scroll to top while screen is covered
+          window.scrollTo(0, 0);
         },
       });
-
-      // ── EXIT PHASE ──
-      
-      // 1. White curtain slides UP (Faster duration to feel more responsive)
-      tl.to(curtain, {
-        y: "0%",
-        duration: 0.45,
-        ease: "power2.inOut",
-      });
-
-      // 2. Perform the route swap exactly when the screen is covered
-      tl.call(() => {
-        router.push(href);
-        window.scrollTo(0, 0);
-      });
-
-      // 3. Very brief hold to ensure Next.js starts rendering
-      tl.to({}, { duration: 0.1 });
-
-      // ── ENTER PHASE ──
-
-      // 4. Slide the curtain AWAY to reveal the new page
-      tl.to(curtain, {
-        y: "-100%",
-        duration: 0.5,
-        ease: "power2.inOut",
-      });
-
-      // 5. Reset curtain position for next transition
-      tl.set(curtain, { y: "100%" });
     },
     [pathname, router]
   );
