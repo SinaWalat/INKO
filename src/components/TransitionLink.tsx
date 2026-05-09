@@ -2,6 +2,8 @@
 
 import { ReactNode, MouseEvent } from "react";
 import { usePageTransition } from "./TransitionProvider";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 interface TransitionLinkProps {
   href: string;
@@ -22,6 +24,14 @@ export default function TransitionLink({
   onClick,
 }: TransitionLinkProps) {
   const { triggerTransition } = usePageTransition();
+  const router = useRouter();
+
+  // Prefetch the route to ensure instantaneous navigation when clicked
+  useEffect(() => {
+    if (href && !href.startsWith("http") && !href.startsWith("mailto") && !href.startsWith("#")) {
+      router.prefetch(href);
+    }
+  }, [href, router]);
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     // Allow external links and new-tab clicks to pass through

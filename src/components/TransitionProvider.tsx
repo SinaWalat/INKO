@@ -60,37 +60,51 @@ export default function TransitionProvider({
 
       // ── EXIT PHASE ──
       
-      // 1. White curtain slides UP to cover the page
+      // 1. White curtain slides UP + Content fades out
       tl.to(curtain, {
         y: "0%",
-        duration: 0.6,
-        ease: "power4.inOut",
+        duration: 0.4,
+        ease: "power2.inOut",
       });
 
-      // 2. While covered by white, swap the route and reset content state
+      tl.to(pageContent, {
+        opacity: 0,
+        y: -20,
+        duration: 0.3,
+        ease: "power2.in",
+      }, 0.1);
+
+      // 2. Perform the actual route swap while covered
       tl.call(() => {
         router.push(href);
         window.scrollTo(0, 0);
-        
-        // IMPORTANT: Make the new content visible IMMEDIATELY while hidden behind the curtain.
-        // This prevents the "black" flash when the curtain slides away.
-        gsap.set(pageContent, { opacity: 1 });
       });
 
-      // 3. Tiny hold to allow the new page to start rendering
-      tl.to({}, { duration: 0.15 });
+      // 3. Short buffer to allow Next.js to start rendering the new component tree
+      tl.to({}, { duration: 0.2 });
 
       // ── ENTER PHASE ──
 
-      // 4. Slide the curtain AWAY to reveal the new page
-      // Because we set opacity to 1 above, the content is already there!
+      // 4. Slide the curtain AWAY and fade the new content IN
       tl.to(curtain, {
         y: "-100%",
-        duration: 0.7,
-        ease: "power4.inOut",
+        duration: 0.5,
+        ease: "power2.inOut",
       });
 
-      // 5. Reset curtain position for next click
+      tl.fromTo(pageContent, 
+        { opacity: 0, y: 20 },
+        { 
+          opacity: 1, 
+          y: 0, 
+          duration: 0.5, 
+          ease: "power2.out",
+          clearProps: "all" // Ensure we don't leave inline styles that break layout
+        },
+        "-=0.3"
+      );
+
+      // 5. Reset curtain position for next transition
       tl.set(curtain, { y: "100%" });
     },
     [pathname, router]
