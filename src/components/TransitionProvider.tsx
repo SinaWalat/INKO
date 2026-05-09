@@ -60,49 +60,30 @@ export default function TransitionProvider({
 
       // ── EXIT PHASE ──
       
-      // 1. White curtain slides UP + Content fades out
+      // 1. White curtain slides UP (Faster duration to feel more responsive)
       tl.to(curtain, {
         y: "0%",
-        duration: 0.4,
+        duration: 0.45,
         ease: "power2.inOut",
       });
 
-      tl.to(pageContent, {
-        opacity: 0,
-        y: -20,
-        duration: 0.3,
-        ease: "power2.in",
-      }, 0.1);
-
-      // 2. Perform the actual route swap while covered
+      // 2. Perform the route swap exactly when the screen is covered
       tl.call(() => {
         router.push(href);
         window.scrollTo(0, 0);
       });
 
-      // 3. Short buffer to allow Next.js to start rendering the new component tree
-      tl.to({}, { duration: 0.2 });
+      // 3. Very brief hold to ensure Next.js starts rendering
+      tl.to({}, { duration: 0.1 });
 
       // ── ENTER PHASE ──
 
-      // 4. Slide the curtain AWAY and fade the new content IN
+      // 4. Slide the curtain AWAY to reveal the new page
       tl.to(curtain, {
         y: "-100%",
         duration: 0.5,
         ease: "power2.inOut",
       });
-
-      tl.fromTo(pageContent, 
-        { opacity: 0, y: 20 },
-        { 
-          opacity: 1, 
-          y: 0, 
-          duration: 0.5, 
-          ease: "power2.out",
-          clearProps: "all" // Ensure we don't leave inline styles that break layout
-        },
-        "-=0.3"
-      );
 
       // 5. Reset curtain position for next transition
       tl.set(curtain, { y: "100%" });
