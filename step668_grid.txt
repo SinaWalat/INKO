@@ -1,0 +1,2 @@
+"      {/* Grid Section */}\n      <section className=\"pb-32 px-6 md:px-12\">\n        <div className=\"flex flex-col md:flex-row gap-x-6 lg:gap-x-12 gap-y-8 items-start w-full\">\n          {Array.from({ length: columns }).map((_, colIndex) => {\n       
+<truncated 1915 bytes>
