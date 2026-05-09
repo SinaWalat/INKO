@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import TransitionLink from "@/components/TransitionLink";
 import Image from "next/image";
@@ -71,7 +71,7 @@ const flagpoleProducts = [
   },
 ];
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: { opacity: 0, y: 50 },
   visible: (i: number) => ({
     opacity: 1,
@@ -79,7 +79,7 @@ const cardVariants = {
     transition: {
       duration: 0.8,
       delay: i * 0.1,
-      ease: [0.25, 0.1, 0.25, 1],
+      ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
     },
   }),
 };

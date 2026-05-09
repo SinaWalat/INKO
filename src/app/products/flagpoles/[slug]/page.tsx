@@ -113,7 +113,7 @@ export default function FlagpoleDetailPage() {
           style={{ gap: gap }}
           initial={false}
           animate={{ x: `calc(${currentIndex} * (-${slideWidth} - ${gap}))` }}
-          transition={{ duration: isAnimating ? 0.8 : 0, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{ duration: isAnimating ? 0.8 : 0, ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number] }}
           onAnimationComplete={handleAnimationComplete}
         >
           {extendedImages.map((src, i) => {
