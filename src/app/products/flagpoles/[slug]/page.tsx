@@ -120,7 +120,7 @@ export default function FlagpoleDetailPage() {
             return (
               <motion.div 
                 key={i} 
-                className="shrink-0 aspect-[4/5] md:aspect-[3/4] lg:aspect-[16/10] relative overflow-hidden bg-[#a21d2b]/5"
+                className="shrink-0 aspect-[4/5] md:aspect-[3/4] lg:aspect-[16/10] relative overflow-hidden rounded-[8px] bg-[#a21d2b]/5"
                 style={{ width: slideWidth }}
                 initial={false}
               >

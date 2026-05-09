@@ -36,12 +36,12 @@ export default function Footer() {
             >
               <TransitionLink
                 href="/contact"
-                className="group flex items-center gap-4 border border-[#ecebe5]/20 hover:border-[#ecebe5]/60 rounded-none py-4 px-8 transition-all duration-500 cursor-pointer hover:bg-[#ecebe5]/5"
+                className="group flex items-center gap-4 border border-white hover:border-white rounded-[8px] py-4 px-8 transition-all duration-500 cursor-pointer hover:bg-white/5"
               >
-                <span className="text-sm font-medium tracking-widest uppercase">
+                <span className="text-sm font-medium tracking-widest uppercase text-white">
                   Get in touch
                 </span>
-                <div className="w-8 h-8 rounded-none bg-[#ecebe5] flex items-center justify-center group-hover:bg-white transition-colors duration-500">
+                <div className="w-8 h-8 rounded-[8px] bg-[#ecebe5] flex items-center justify-center group-hover:bg-white transition-colors duration-500">
                   <ArrowRight size={14} className="text-[#a21d2b] group-hover:text-[#a21d2b] transition-colors duration-500" />
                 </div>
               </TransitionLink>

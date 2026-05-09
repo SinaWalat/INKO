@@ -155,7 +155,7 @@ const ProductCard = ({
   const content = (
     <>
       <div
-        className={`relative w-full ${aspect} mb-4 overflow-hidden bg-[#a21d2b]/5 ${isDisabled ? 'grayscale brightness-[0.9]' : ''}`}
+        className={`relative w-full ${aspect} mb-4 overflow-hidden rounded-[8px] bg-[#a21d2b]/5 ${isDisabled ? 'grayscale brightness-[0.9]' : ''}`}
         style={{ transform: "translateZ(0)" }}
       >
         <div className="absolute inset-0">
@@ -409,7 +409,7 @@ export default function Home() {
 
             <button
               onClick={() => setIsMenuOpen(true)}
-              className="text-[#a21d2b] hover:opacity-70 transition-opacity cursor-pointer z-[60]"
+              className="group text-[#a21d2b] transition-all duration-500 ease-[0.76, 0, 0.24, 1] cursor-pointer z-[60]"
             >
               <svg
                 width="56"
@@ -423,8 +423,11 @@ export default function Home() {
                   y="0.5"
                   width="55"
                   height="25"
+                  rx="8"
+                  ry="8"
                   stroke="currentColor"
                   strokeWidth="1"
+                  className="transition-all duration-500 ease-[0.76, 0, 0.24, 1] group-hover:fill-[#a21d2b] group-hover:stroke-[#a21d2b]"
                 />
                 <line
                   x1="16"
@@ -433,6 +436,7 @@ export default function Home() {
                   y2="11.5"
                   stroke="currentColor"
                   strokeWidth="1"
+                  className="transition-all duration-500 ease-[0.76, 0, 0.24, 1] group-hover:stroke-white"
                 />
                 <line
                   x1="16"
@@ -441,6 +445,7 @@ export default function Home() {
                   y2="15.5"
                   stroke="currentColor"
                   strokeWidth="1"
+                  className="transition-all duration-500 ease-[0.76, 0, 0.24, 1] group-hover:stroke-white"
                 />
               </svg>
             </button>
@@ -482,18 +487,19 @@ export default function Home() {
               variants={heroImageVariants}
               initial="hidden"
               animate="visible"
-              className="relative w-full h-[calc(100vh-120px)] min-h-[760px] overflow-hidden"
+              className="relative w-full h-[calc(100vh-120px)] min-h-[760px] overflow-hidden rounded-[8px]"
               style={{ transform: "translateZ(0)" }}
             >
-              <Image
-                src="/images/NEW NEW.png"
-                alt="INKO flags and flagpoles"
-                fill
-                priority
-                loading="eager"
-                className="object-cover"
-                sizes="100vw"
-              />
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-full object-cover scale-[1.05]"
+              >
+                <source src="/videos/HeroVideo.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             </motion.div>
           </div>
         </section>

@@ -197,7 +197,7 @@ export default function FlagpoleCollectionPage() {
                   >
                     <TransitionLink href={product.href} className="block w-full">
                       <div
-                        className="relative w-full aspect-square mb-4 overflow-hidden bg-[#a21d2b]/5"
+                        className="relative w-full aspect-square mb-4 overflow-hidden rounded-[8px] bg-[#a21d2b]/5"
                         style={{ transform: "translateZ(0)" }}
                       >
                         <Image
