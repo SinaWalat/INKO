@@ -28,28 +28,10 @@ const flagpoleProducts = [
     href: "/products/flagpoles/internal-halyard",
   },
   {
-    id: 4,
-    title: "External Halyard",
-    image: "https://pub-9346dd0d7d8d4a61bbf08e53903451d4.r2.dev/images/FLAGPOLES/Flagpole4/1.webp",
-    href: "/products/flagpoles/external-halyard",
-  },
-  {
-    id: 5,
-    title: "Counter-Balanced",
-    image: "https://pub-9346dd0d7d8d4a61bbf08e53903451d4.r2.dev/images/FLAGPOLES/Flagpole5/1.webp",
-    href: "/products/flagpoles/counter-balanced",
-  },
-  {
     id: 6,
     title: "Wall Mounted",
     image: "https://pub-9346dd0d7d8d4a61bbf08e53903451d4.r2.dev/images/FLAGPOLES/Flagpole6/1.webp",
     href: "/products/flagpoles/wall-mounted",
-  },
-  {
-    id: 7,
-    title: "High-Wind Series",
-    image: "https://pub-9346dd0d7d8d4a61bbf08e53903451d4.r2.dev/images/FLAGPOLES/Flagpole7/1.webp",
-    href: "/products/flagpoles/high-wind-series",
   },
   {
     id: 8,
@@ -62,12 +44,6 @@ const flagpoleProducts = [
     title: "Commercial Grade",
     image: "https://pub-9346dd0d7d8d4a61bbf08e53903451d4.r2.dev/images/FLAGPOLES/Flagpole9/1.webp",
     href: "/products/flagpoles/commercial-grade",
-  },
-  {
-    id: 10,
-    title: "Tilt-Base System",
-    image: "https://pub-9346dd0d7d8d4a61bbf08e53903451d4.r2.dev/images/FLAGPOLES/Flagpole10/1.webp",
-    href: "/products/flagpoles/tilt-base-system",
   },
 ];
 
@@ -126,20 +102,6 @@ export default function FlagpoleCollectionPage() {
 
   return (
     <main className="min-h-screen bg-white">
-      {/* Navigation */}
-      <nav className="relative z-50 w-full px-6 py-8 md:px-12 flex justify-between items-center bg-white">
-        <TransitionLink href="/" className="flex items-center">
-          <Image src="/Logo.svg" alt="INKO Company" width={160} height={58} className="w-32 md:w-40 object-contain" />
-        </TransitionLink>
-
-        <TransitionLink
-          href="/"
-          className="text-[#a21d2b] hover:opacity-70 transition-opacity cursor-pointer flex items-center gap-2 text-sm font-medium uppercase tracking-widest"
-        >
-          <ArrowLeft size={16} />
-          Back to Home
-        </TransitionLink>
-      </nav>
 
       {/* Header Section (Matching AboutSection Layout) */}
       <section ref={headerRef} className="pt-24 pb-20 px-6 md:px-12">
@@ -148,7 +110,7 @@ export default function FlagpoleCollectionPage() {
           <div className="lg:w-[30%] shrink-0">
             <h1
               ref={titleRef}
-              className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.2] text-[#a21d2b] uppercase"
+              className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.2] text-[#ed1c24] uppercase"
               style={{ opacity: 0 }}
             >
               Flagpole <br /> Collection
@@ -197,7 +159,7 @@ export default function FlagpoleCollectionPage() {
                   >
                     <TransitionLink href={product.href} className="block w-full">
                       <div
-                        className="relative w-full aspect-square mb-4 overflow-hidden rounded-[8px] bg-[#a21d2b]/5"
+                        className="relative w-full aspect-square mb-4 overflow-hidden rounded-[8px] bg-[#ed1c24]/5"
                         style={{ transform: "translateZ(0)" }}
                       >
                         <Image
@@ -209,10 +171,10 @@ export default function FlagpoleCollectionPage() {
                         />
                       </div>
                       <div className="flex justify-between items-start">
-                        <h3 className="text-[#a21d2b] font-medium text-lg">
+                        <h3 className="text-[#ed1c24] font-medium text-lg">
                           {product.title}
                         </h3>
-                        <div className="w-2 h-2 rounded-full bg-[#a21d2b] mt-2 shrink-0"></div>
+                        <div className="w-2 h-2 rounded-full bg-[#ed1c24] mt-2 shrink-0"></div>
                       </div>
                     </TransitionLink>
                   </motion.div>

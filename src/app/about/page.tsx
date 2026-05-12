@@ -5,316 +5,264 @@ import { ArrowRight } from "lucide-react";
 import TransitionLink from "@/components/TransitionLink";
 import Image from "next/image";
 import Footer from "@/components/Footer";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-/* ── Animation Variants ── */
+gsap.registerPlugin(ScrollTrigger);
 
-const fadeIn = {
-  hidden: { opacity: 0, z: 0 },
-  visible: (delay: number) => ({
-    opacity: 1,
-    z: 0,
-    transition: { duration: 1, delay, ease: "easeOut" as const },
-  }),
-};
-
-const lineReveal = {
-  hidden: { scaleX: 0, z: 0 },
-  visible: (delay: number) => ({
-    scaleX: 1,
-    z: 0,
-    transition: { duration: 1.2, delay, ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number] },
-  }),
-};
-
-const wordVariants = {
-  hidden: { opacity: 0, y: 20, z: 0 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    z: 0,
-    transition: {
-      duration: 1.2,
-      delay: 0.3 + i * 0.12,
-      ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
-    },
-  }),
-};
 
 export default function AboutPage() {
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // 1. Immediate Hero Reveal
+      const heroElements = gsap.utils.toArray<HTMLElement>('.hero-reveal');
+      heroElements.forEach((el) => {
+        const delay = el.dataset.delay ? parseFloat(el.dataset.delay) : 0;
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 30, filter: "blur(10px)" },
+          {
+            opacity: 1,
+            y: 0,
+            filter: "blur(0px)",
+            duration: 1.5,
+            ease: "power3.out",
+            delay: delay + 0.2
+          }
+        );
+      });
+
+      // 2. Story Reveal (starts after Hero finishes)
+      const storyElements = gsap.utils.toArray<HTMLElement>('.story-reveal');
+      storyElements.forEach((el, i) => {
+        const baseDelay = 0.8; // Overlaps with Hero description for a fluid feel
+        const stagger = i * 0.1;
+        
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 30, filter: "blur(8px)" },
+          {
+            opacity: 1,
+            y: 0,
+            filter: "blur(0px)",
+            duration: 1.2,
+            ease: "power2.out",
+            delay: baseDelay + stagger
+          }
+        );
+      });
+
+      // 3. Mission Reveal
+      const missionElements = gsap.utils.toArray<HTMLElement>('.mission-reveal');
+      missionElements.forEach((el, i) => {
+        const baseDelay = 1.8; // Overlaps with the end of Story section
+        const stagger = i * 0.15;
+        
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 30, filter: "blur(10px)" },
+          {
+            opacity: 1,
+            y: 0,
+            filter: "blur(0px)",
+            duration: 1.5,
+            ease: "power3.out",
+            delay: baseDelay + stagger
+          }
+        );
+      });
+
+      // 4. CTA Reveal
+      const ctaElements = gsap.utils.toArray<HTMLElement>('.cta-reveal');
+      ctaElements.forEach((el, i) => {
+        const baseDelay = 2.5; // Starts toward the end of Mission
+        const stagger = i * 0.15;
+        
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 30, filter: "blur(8px)" },
+          {
+            opacity: 1,
+            y: 0,
+            filter: "blur(0px)",
+            duration: 1.2,
+            ease: "power2.out",
+            delay: baseDelay + stagger
+          }
+        );
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <main className="min-h-screen bg-[#ecebe5]">
-      {/* Navigation */}
-      <nav className="relative z-50 w-full px-6 py-8 md:px-12 flex justify-between items-center">
-        <TransitionLink href="/" className="flex items-center">
-          <Image src="/Logo.svg" alt="INKO Company" width={160} height={58} className="w-32 md:w-40 object-contain" />
-        </TransitionLink>
-
-        <TransitionLink
-          href="/"
-          className="text-[#333] hover:opacity-70 transition-opacity cursor-pointer"
-        >
-          <svg
-            width="56"
-            height="26"
-            viewBox="0 0 56 26"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect
-              x="0.5"
-              y="0.5"
-              width="55"
-              height="25"
-              stroke="currentColor"
-              strokeWidth="1"
-            />
-            <line
-              x1="16"
-              y1="11.5"
-              x2="40"
-              y2="11.5"
-              stroke="currentColor"
-              strokeWidth="1"
-            />
-            <line
-              x1="16"
-              y1="15.5"
-              x2="40"
-              y2="15.5"
-              stroke="currentColor"
-              strokeWidth="1"
-            />
-          </svg>
-        </TransitionLink>
-      </nav>
-
+    <main className="min-h-screen bg-white selection:bg-[#ed1c24] selection:text-white overflow-x-hidden">
       {/* Hero Header */}
-      <section className="w-full px-6 md:px-16 pt-16 md:pt-24 pb-20 md:pb-32">
-        <div className="max-w-[1400px]">
-          {/* Eyebrow */}
-          <motion.p
-            custom={0}
-            variants={fadeIn}
-            initial="hidden"
-            animate="visible"
-            className="text-[#a21d2b] text-xs md:text-sm font-medium tracking-[0.3em] uppercase mb-8"
-          >
-            About Us
-          </motion.p>
+      <section className="relative w-full px-6 md:px-12 pt-12 md:pt-20 pb-16 md:pb-24">
+        <div className="grid grid-cols-1 md:grid-cols-[30%_1fr] gap-x-10 md:gap-x-24 items-end">
+          {/* Row 1: Eyebrow */}
+          <div className="mb-8">
+            <div className="hero-reveal flex items-center gap-4 opacity-0">
+              <p className="text-[#ed1c24] text-xs md:text-sm font-medium tracking-[0.2em] uppercase">
+                Company Profile
+              </p>
+            </div>
+          </div>
+          <div className="hidden md:block"></div>
 
-          {/* Title — word by word */}
-          <h1 className="text-[2.5rem] md:text-[5rem] lg:text-[6rem] leading-[1] font-medium tracking-tight text-[#333] mb-0">
-            {(() => {
-              const words = ["INKO"];
-              return words.map((word, i) => (
-                <motion.span
+          {/* Row 2: Title & Description */}
+          <div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl leading-[1.1] font-light tracking-tight text-[#111]">
+              {["Swedish", "Quality,", "Global", "Reach."].map((word, i) => (
+                <span
                   key={i}
-                  className="inline-block mr-[0.25em]"
-                  custom={i}
-                  variants={wordVariants}
-                  initial="hidden"
-                  animate="visible"
+                  data-delay={0.1 + i * 0.1}
+                  className="hero-reveal inline-block mr-[0.25em] opacity-0"
                 >
                   {word}
-                </motion.span>
-          ));
-            })()}
-        </h1>
+                </span>
+              ))}
+            </h1>
+          </div>
 
-        {/* Divider */}
-        <motion.div
-          className="w-full h-px bg-[#333]/20 my-10 md:my-16 origin-left"
-          custom={0.6}
-          variants={lineReveal}
-          initial="hidden"
-          animate="visible"
-        />
+          <div>
+            <div className="max-w-2xl">
+              <p className="hero-reveal text-lg md:text-2xl font-light text-[#555] leading-relaxed opacity-0" data-delay={0.6}>
+                INKO is a Swedish-origin company headquartered in Dubai, specializing in high-quality flagpoles, flags, and professional sign systems for prestigious environments.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        {/* Subtitle */}
-        <motion.h2
-          custom={0.8}
-          variants={fadeIn}
-          initial="hidden"
-          animate="visible"
-          className="text-xl md:text-3xl lg:text-4xl font-light text-[#333] leading-snug max-w-[900px]"
-        >
-          Swedish Quality in Flagpoles, Flags and Sign Systems
-        </motion.h2>
-      </div>
-    </section>
+      {/* The Story */}
+      <section className="w-full px-6 md:px-12 pb-32 md:pb-48 bg-white">
+        <div className="grid grid-cols-1 md:grid-cols-[30%_1fr] gap-x-10 md:gap-x-24 items-end">
+          {/* Row 1: Heading & First Paragraph */}
+          <div className="shrink-0">
+            <h3 className="story-reveal text-4xl md:text-5xl lg:text-6xl font-light leading-[1.2] text-[#111] opacity-0">
+              Crafting<br />Excellence
+            </h3>
+          </div>
 
-      {/* Main Content */ }
-  <section className="w-full px-6 md:px-16 pb-24 md:pb-40">
-    <div className="max-w-[1400px]">
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-24">
-        {/* Left Column — Main Copy */}
-        <div className="md:col-span-7">
-          <motion.div
-            custom={1}
-            variants={fadeIn}
-            initial="hidden"
-            animate="visible"
-          >
-            <p className="text-[#333] font-light text-lg md:text-xl leading-relaxed mb-8">
-              INKO is a Swedish-origin company headquartered in
-              Dubai, United Arab Emirates, specializing in high-quality
-              flagpoles, flags, signage, and professional sign systems for
-              governmental, commercial, public, architectural, and corporate
-              projects.
-            </p>
-
-            <p className="text-[#333] font-light text-lg md:text-xl leading-relaxed mb-8">
+          <div className="prose prose-lg max-w-none">
+            <p className="story-reveal text-[#333] font-light text-xl md:text-3xl leading-snug opacity-0">
               Our work is based on quality, reliability, responsibility, and
-              long-term customer satisfaction. From the first consultation
-              and project planning to delivery, installation, and
-              after-sales support, INKO provides professional solutions that
-              meet international standards and are adapted to the needs of
-              each project.
+              long-term customer satisfaction. 
             </p>
-
-            <p className="text-[#333] font-light text-lg md:text-xl leading-relaxed">
-              At INKO, we believe that every project must be completed with
-              care, precision, and professional follow-up. Our goal is to
-              deliver products that are not only functional, but also
-              elegant, durable, and suitable for prestigious environments.
-            </p>
-          </motion.div>
+          </div>
         </div>
 
-        {/* Right Column — Key Values */}
-        <div className="md:col-span-5 md:pt-4">
-          <motion.div
-            custom={1.3}
-            variants={fadeIn}
-            initial="hidden"
-            animate="visible"
-            className="space-y-10"
-          >
-            {[
-              { label: "Quality", desc: "Swedish engineering standards" },
-              {
-                label: "Reliability",
-                desc: "Trusted long-term partnerships",
-              },
-              {
-                label: "Precision",
-                desc: "Attention to every detail",
-              },
-              {
-                label: "Elegance",
-                desc: "Designed for prestigious environments",
-              },
-            ].map((item, i) => (
-              <div key={i}>
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-2 h-2 rounded-full bg-[#a21d2b] shrink-0"></div>
-                  <h3 className="text-[#333] font-medium text-lg tracking-wide uppercase">
-                    {item.label}
-                  </h3>
+        {/* Row 2: Line & Location */}
+        <div className="grid grid-cols-1 md:grid-cols-[30%_1fr] gap-x-10 md:gap-x-24">
+          <div className="shrink-0">
+            <p className="story-reveal text-sm font-medium text-[#888] uppercase tracking-widest opacity-0 mt-6">
+              Dubai, UAE
+            </p>
+          </div>
+          <div className="hidden md:block"></div>
+        </div>
+
+        {/* Row 3: Secondary Narrative */}
+        <div className="grid grid-cols-1 md:grid-cols-[30%_1fr] gap-x-10 md:gap-x-24 mt-8 md:mt-12">
+          <div className="hidden md:block"></div>
+          
+          <div className="md:flex-1">
+            <div className="prose prose-lg max-w-none">
+              <p className="story-reveal text-[#666] font-light text-lg md:text-xl leading-relaxed mb-8 opacity-0">
+                From the first consultation
+                and project planning to delivery, installation, and
+                after-sales support, INKO provides professional solutions that
+                meet international standards and are adapted to the needs of
+                each project.
+              </p>
+
+              <p className="story-reveal text-[#666] font-light text-lg md:text-xl leading-relaxed opacity-0">
+                At INKO, we believe that every project must be completed with
+                care, precision, and professional follow-up. Our goal is to
+                deliver products that are not only functional, but also
+                elegant, durable, and suitable for prestigious environments.
+              </p>
+            </div>
+
+            {/* Key Values Grid */}
+            <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-16">
+              {[
+                { label: "Quality", desc: "Swedish engineering standards", num: "01" },
+                { label: "Reliability", desc: "Trusted long-term partnerships", num: "02" },
+                { label: "Precision", desc: "Attention to every detail", num: "03" },
+                { label: "Elegance", desc: "Designed for prestigious environments", num: "04" },
+              ].map((item, i) => (
+                <div 
+                  key={i}
+                  className="story-reveal relative border-t border-black/10 pt-6 opacity-0"
+                >
+                  <span className="absolute top-6 right-0 text-xs font-medium text-[#ed1c24]">{item.num}</span>
+                  <h4 className="text-[#ed1c24] font-medium text-xl mb-3">{item.label}</h4>
+                  <p className="text-[#666] font-light">{item.desc}</p>
                 </div>
-                <p className="text-[#888] font-light text-sm pl-5">
-                  {item.desc}
-                </p>
-              </div>
-            ))}
-          </motion.div>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </section>
+      </section>
 
-  {/* Mission Section */ }
-  <section className="w-full bg-[#333] text-[#ecebe5]">
-    <div className="px-6 md:px-16 py-24 md:py-40 max-w-[1400px]">
-      <motion.div
-        initial={{ opacity: 0, z: 0 }}
-        whileInView={{ opacity: 1, z: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, ease: "easeOut" as const }}
-      >
-        <p className="text-[#a21d2b] text-xs md:text-sm font-medium tracking-[0.3em] uppercase mb-8">
-          Our Mission
-        </p>
+      {/* Mission Section */}
+      <section className="w-full bg-[#f8f8f8] border-y border-black/5 py-32 md:py-48 px-6 md:px-12 overflow-hidden relative">
+        <div className="max-w-[1400px] relative z-10 text-left">
+          <p className="mission-reveal text-[#ed1c24] text-xs md:text-sm font-medium tracking-[0.2em] uppercase mb-12 opacity-0">
+            Our Mission
+          </p>
+          <h2 className="mission-reveal text-3xl md:text-5xl lg:text-7xl font-light text-[#111] leading-[1.1] max-w-[1200px] tracking-tight mb-16 opacity-0">
+            To provide elegant, reliable, and long-lasting solutions in flagpoles, flags, signage, and advertising systems.
+          </h2>
+          <p className="mission-reveal text-[#666] font-light text-lg md:text-2xl max-w-[800px] leading-relaxed opacity-0">
+            Combining Swedish quality, international experience, and professional service to become the trusted partner in the region.
+          </p>
+        </div>
+      </section>
 
-        <motion.div
-          className="w-full h-px bg-white/20 mb-12 md:mb-16 origin-left"
-          initial={{ scaleX: 0, z: 0 }}
-          whileInView={{ scaleX: 1, z: 0 }}
-          viewport={{ once: true }}
-          transition={{
-            duration: 1.2,
-            delay: 0.3,
-            ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
-          }}
-        />
+      {/* CTA Section */}
+      <section className="w-full px-6 md:px-12 py-32 md:py-48">
+        <div className="max-w-[1400px] text-left flex flex-col items-start">
+          <h3 className="cta-reveal text-4xl md:text-6xl font-light text-[#111] tracking-tight mb-6 opacity-0">
+            Let&apos;s work together
+          </h3>
+          <p className="cta-reveal text-[#666] font-light text-xl mb-12 opacity-0">
+            Contact us to discuss your next prestigious project.
+          </p>
 
-        <p className="font-light text-2xl md:text-4xl leading-snug mb-10 max-w-[1000px]">
-          Our mission is to provide elegant, reliable, and long-lasting
-          solutions in flagpoles, flags, signage, and advertising systems.
-        </p>
-
-        <p className="font-light text-lg md:text-xl leading-relaxed text-[#ecebe5]/70 max-w-[900px]">
-          We aim to support our customers with products that combine Swedish
-          quality, international experience, and professional service. Our
-          goal is to become a trusted partner for flagpoles, flags, sign
-          systems, and advertising solutions in Kurdistan, Iraq, and the
-          wider region.
-        </p>
-      </motion.div>
-    </div>
-  </section>
-
-  {/* CTA Section */ }
-  <section className="w-full px-6 md:px-16 py-24 md:py-32">
-    <div className="max-w-[1400px] flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-      <motion.div
-        initial={{ opacity: 0, z: 0 }}
-        whileInView={{ opacity: 1, z: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-      >
-        <h3 className="text-3xl md:text-5xl font-medium text-[#333] tracking-tight mb-3">
-          Let&apos;s work together
-        </h3>
-        <p className="text-[#888] font-light text-lg">
-          Contact us to discuss your next project.
-        </p>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, z: 0 }}
-        whileInView={{ opacity: 1, z: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className="flex gap-4"
-      >
-        <TransitionLink href="/#collections" className="group cursor-pointer bg-[#a21d2b] hover:bg-[#333] text-[#ecebe5] transition-colors duration-300 py-3 px-5 flex justify-between items-center text-[10px] md:text-xs font-medium tracking-widest">
-          <span className="text-left">
-            EXPLORE
-            <br />
-            PRODUCTS
-          </span>
-          <div className="bg-white/20 group-hover:bg-white rounded-full p-1 ml-4 transition-colors duration-300">
-            <ArrowRight
-              size={14}
-              className="text-[#ecebe5] group-hover:text-[#333]"
-            />
+          <div className="flex flex-col sm:flex-row gap-6">
+            <div className="cta-reveal opacity-0">
+              <TransitionLink 
+                href="/#collections" 
+                className="group cursor-pointer bg-[#ed1c24] hover:bg-[#8e1925] text-white transition-colors duration-500 py-4 px-8 flex justify-between items-center text-xs font-medium tracking-[0.2em] uppercase rounded-[8px]"
+              >
+                <span className="mr-6">Explore Products</span>
+                <div className="bg-white/10 group-hover:bg-white/20 rounded-full p-1.5 transition-colors duration-500">
+                  <ArrowRight size={14} className="text-white" />
+                </div>
+              </TransitionLink>
+            </div>
+            
+            <div className="cta-reveal opacity-0">
+              <TransitionLink 
+                href="/contact" 
+                className="group cursor-pointer bg-white border border-[#e5e5e5] hover:border-[#111] text-[#111] transition-colors duration-500 py-4 px-8 flex justify-between items-center text-xs font-medium tracking-[0.2em] uppercase rounded-[8px]"
+              >
+                <span className="mr-6">Contact Us</span>
+                <div className="bg-[#f5f5f5] group-hover:bg-[#111] rounded-full p-1.5 transition-colors duration-500">
+                  <ArrowRight size={14} className="text-[#111] group-hover:text-white" />
+                </div>
+              </TransitionLink>
+            </div>
           </div>
-        </TransitionLink>
-        <TransitionLink href="/contact" className="group cursor-pointer bg-[#333] hover:bg-[#111] text-[#ecebe5] transition-colors duration-300 py-3 px-5 flex justify-between items-center text-[10px] md:text-xs font-medium tracking-widest uppercase">
-          <span className="text-left">CONTACT</span>
-          <div className="bg-white/20 group-hover:bg-white rounded-full p-1 ml-4 transition-colors duration-300">
-            <ArrowRight
-              size={14}
-              className="text-[#ecebe5] group-hover:text-[#333]"
-            />
-          </div>
-        </TransitionLink>
-      </motion.div>
-    </div>
-  </section>
+        </div>
+      </section>
 
-  <Footer />
-    </main >
+      <Footer />
+    </main>
   );
 }

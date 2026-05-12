@@ -12,13 +12,9 @@ const flagpolesData = [
   { id: 1, slug: "classic-series", title: "Classic Series", images: ["1.webp", "2.webp", "3.webp"] },
   { id: 2, slug: "architectural-series", title: "Architectural Series", images: ["1.webp", "2.webp", "3.webp"] },
   { id: 3, slug: "internal-halyard", title: "Internal Halyard", images: ["1.webp", "2.webp", "3.webp"] },
-  { id: 4, slug: "external-halyard", title: "External Halyard", images: ["1.webp", "2.webp", "3.webp"] },
-  { id: 5, slug: "counter-balanced", title: "Counter-Balanced", images: ["1.webp", "2.webp", "3.webp", "4.webp"] },
   { id: 6, slug: "wall-mounted", title: "Wall Mounted", images: ["1.webp", "2.webp", "3.webp"] },
-  { id: 7, slug: "high-wind-series", title: "High-Wind Series", images: ["1.webp", "2.webp", "3.webp"] },
   { id: 8, slug: "prestige-gold", title: "Prestige Gold", images: ["1.webp", "2.webp"] },
   { id: 9, slug: "commercial-grade", title: "Commercial Grade", images: ["1.webp", "Cover_1.webp?v=2"] },
-  { id: 10, slug: "tilt-base-system", title: "Tilt-Base System", images: ["1.webp", "2.webp"] },
 ];
 
 export default function FlagpoleDetailPage() {
@@ -91,20 +87,6 @@ export default function FlagpoleDetailPage() {
 
   return (
     <main className="min-h-screen bg-white">
-      {/* Navigation */}
-      <nav className="relative z-50 w-full px-6 py-8 md:px-12 flex justify-between items-center bg-white">
-        <TransitionLink href="/" className="flex items-center">
-          <Image src="/Logo.svg" alt="INKO Company" width={160} height={58} className="w-32 md:w-40 object-contain" />
-        </TransitionLink>
-
-        <TransitionLink
-          href="/products/flagpoles/collection"
-          className="text-[#a21d2b] hover:opacity-70 transition-opacity cursor-pointer flex items-center gap-2 text-sm font-medium uppercase tracking-widest"
-        >
-          <ArrowLeft size={16} />
-          Back to Collection
-        </TransitionLink>
-      </nav>
 
       {/* Carousel Section */}
       <section className="pt-12 overflow-hidden w-full relative">
@@ -120,7 +102,7 @@ export default function FlagpoleDetailPage() {
             return (
               <motion.div 
                 key={i} 
-                className="shrink-0 aspect-[4/5] md:aspect-[3/4] lg:aspect-[16/10] relative overflow-hidden rounded-[8px] bg-[#a21d2b]/5"
+                className="shrink-0 aspect-[4/5] md:aspect-[3/4] lg:aspect-[16/10] relative overflow-hidden rounded-[8px] bg-[#ed1c24]/5"
                 style={{ width: slideWidth }}
                 initial={false}
               >
@@ -146,14 +128,14 @@ export default function FlagpoleDetailPage() {
           <div className="flex gap-8 mb-16">
             <button 
               onClick={prev} 
-              className="flex items-center gap-2 text-sm tracking-widest uppercase hover:text-[#a21d2b] transition-colors text-gray-500 cursor-pointer"
+              className="flex items-center gap-2 text-sm tracking-widest uppercase hover:text-[#ed1c24] transition-colors text-gray-500 cursor-pointer"
             >
               <ArrowLeft size={16} strokeWidth={1.5} />
               Prev
             </button>
             <button 
               onClick={next} 
-              className="flex items-center gap-2 text-sm tracking-widest uppercase hover:text-[#a21d2b] transition-colors text-gray-500 cursor-pointer"
+              className="flex items-center gap-2 text-sm tracking-widest uppercase hover:text-[#ed1c24] transition-colors text-gray-500 cursor-pointer"
             >
               Next
               <ArrowRight size={16} strokeWidth={1.5} />
@@ -164,7 +146,7 @@ export default function FlagpoleDetailPage() {
         {/* Title and Description */}
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 mt-8 lg:mt-0">
           <div className="lg:w-[30%] shrink-0">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-[#a21d2b] uppercase leading-[1.1]">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-[#ed1c24] uppercase leading-[1.1]">
               {product.title}
             </h1>
           </div>

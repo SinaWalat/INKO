@@ -90,15 +90,15 @@ export default function AboutSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-white py-28 md:py-36 overflow-hidden">
+    <section ref={sectionRef} className="bg-white py-12 md:py-16 overflow-hidden">
       {/* Text area — padding matches nav (px-6 md:px-12) */}
       <div className="w-full px-6 md:px-12">
-        <div className="flex flex-col lg:flex-row gap-10 lg:gap-24 mb-16 md:mb-24">
+        <div className="flex flex-col lg:flex-row gap-10 lg:gap-24">
           {/* Left — Title */}
           <div className="lg:w-[30%] shrink-0">
             <h2
               ref={titleRef}
-              className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.2] text-[#a21d2b]"
+              className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.2] text-[#ed1c24]"
               style={{ opacity: 0 }}
             >
               About INKO

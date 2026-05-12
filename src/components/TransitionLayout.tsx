@@ -3,6 +3,7 @@
 import { ReactNode } from "react";
 import TransitionProvider from "./TransitionProvider";
 import PageTransition from "./PageTransition";
+import Header from "./Header";
 
 /**
  * Client-side layout wrapper that:
@@ -19,6 +20,7 @@ export default function TransitionLayout({
     <TransitionProvider>
       <PageTransition />
       <div id="page-content" style={{ willChange: "transform, opacity" }}>
+        <Header />
         {children}
       </div>
     </TransitionProvider>
